@@ -1,8 +1,8 @@
 {
   "name": "entity",
   "description": "entity class",
-  "version": "0.0.1",
-  "keywords": ["game", "entity"],  
+  "version": "0.0.2",
+  "keywords": ["game","entity"],
   "dependencies": {
     "component/emitter": "*",
     "entity/uid": "*"
