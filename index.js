@@ -41,6 +41,7 @@ module.exports = Entity
 function Entity (components, id) {
   if (!(this instanceof Entity)) return new Entity(components, id)
   this.id = id || uid()
+  this.defaults = {}
   this.components = components && components.components || components || []
 }
 
@@ -111,12 +112,13 @@ Entity.prototype.applyComponent = function (c) {
   for (var p in c) {
     var val = c[p]
     if (Array.isArray(val)) {
-      //if ('function' == typeof val[0]) {
-        e[p] = val[0].apply(val, val.slice(1))
-      //}
-      //else {
-      //  e[p] = val.slice()
-      //}
+      e[p] = val[0].apply(val, val.slice(1))
+      e.defaults[p] = val
+    }
+    else if ('function' == typeof val) {
+      if ('_' == p.substr(0,1)) {
+        e[p.substr(1)] = val
+      }
     }
   }
   return this
