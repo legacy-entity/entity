@@ -108,15 +108,14 @@ Entity.prototype.has = function (c) {
 Entity.prototype.applyComponent = function (c) {
   var e = this
   for (var p in c) {
+    if ('components' == p) continue
     var val = c[p]
     if (Array.isArray(val)) {
-      e[p] = val[0].apply(val, val.slice(1))
       e.defaults[p] = val
+      e[p] = e.getDefault(p)
     }
     else if ('function' == typeof val) {
-      if ('_' == p.substr(0,1)) {
-        e[p.substr(1)] = val
-      }
+      e[p] = val
     }
   }
   return this
