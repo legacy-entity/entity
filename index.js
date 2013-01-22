@@ -1,4 +1,6 @@
 
+var slice = [].slice
+
 /**
  * Module dependencies.
  */
