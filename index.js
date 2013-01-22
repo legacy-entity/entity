@@ -77,7 +77,10 @@ Entity.prototype.use = function (c) {
 
 Entity.prototype.add = function (c) {
   if (this.has(c)) {
-    throw new Error(this.id+': already has component "'+c.id)
+    console.dir(c)
+    console.error(this.id + ' already has component', c)
+    return
+//    throw new Error(this.id+': already has component "'+c)
   }
   this.components.push(c)
   this.emit('use', c)
