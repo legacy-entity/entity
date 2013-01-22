@@ -48,18 +48,22 @@ Emitter(Entity.prototype)
  */
 
 Entity.prototype.use = function (c) {
-  c = c.component || (c.component = c || {})
+  if (null == c) return
 
-  if (c instanceof Entity) {
+  var oc = c
+
+  if (c instanceof Entity || c.components) {
     var e = c
     for (var i = 0; i < e.components.length; i++) {
       c = e.components[i]
-      this.add(c)
+      this.use(c)
     }
-    return this
+  }
+  else if (Array.isArray(c)) {
+    c.forEach(this.use, this)
   }
 
-  this.add(c)
+  this.add(oc)
 
   return this
 }
