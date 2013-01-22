@@ -128,35 +128,6 @@ Entity.prototype.getDefault = function (p) {
   return fn.apply(c, args)
 }
 
-Entity.prototype.start = function (systems) {
-  return this.runSystems('start', systems)
-}
-
-Entity.prototype.pause = function (systems) {
-  return this.runSystems('pause', systems)
-}
-
-Entity.prototype.stop = function (systems) {
-  return this.runSystems('stop', systems)
-}
-
-Entity.prototype.tear = function (systems) {
-  return this.runSystems('tear', systems)
-}
-
-Entity.prototype.runSystems = function (method, systems) {
-  var self = this
-  systems.forEach(function (system) {
-    system.each(system, function (e) {
-      if (e === self) {
-        if (system[method]) system[method].call(system, e)
-      }
-    })
-  })
-  return this
-}
-
-
 /**
  * Merge two objects.
  *
