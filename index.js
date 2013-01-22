@@ -22,11 +22,18 @@ module.exports = Entity
  * @api public
  */
 
-function Entity (components, id) {
-  if (!(this instanceof Entity)) return new Entity(components, id)
-  this.id = id || uid()
+function Entity () {
+  var args = slice.call(arguments)
+  if (!(this instanceof Entity)) {
+    return new Entity(args)
+  }
+  this.id = uid()
   this.defaults = {}
-  this.components = components && components.components || components || []
+  this.components = []
+
+  args.forEach(function (arg) {
+    this.use(arg)
+  }, this)
 }
 
 Emitter(Entity.prototype)
