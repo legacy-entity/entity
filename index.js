@@ -121,8 +121,11 @@ Entity.prototype.applyComponent = function (c) {
   return this
 }
 
-Entity.prototype.init = function (systems) {
-  return this.runSystems('init', systems)
+Entity.prototype.getDefault = function (p) {
+  var c = this.defaults[p]
+  var fn = c[0]
+  var args = c.slice(1)
+  return fn.apply(c, args)
 }
 
 Entity.prototype.start = function (systems) {
