@@ -83,7 +83,7 @@ Entity.prototype.add = function (c) {
 //    throw new Error(this.id+': already has component "'+c)
   }
   this.components.push(c)
-  this.emit('use', c)
+  this.emit('add', c)
 }
 
 /**
