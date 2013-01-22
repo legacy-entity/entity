@@ -17,24 +17,6 @@ module.exports = Entity
 /**
  * Entity class.
  *
- * Entity instances serve as dictionaries of Components.
- * They do not keep data or state and are used only to
- * pass references of Entity constructors.
- * 
- * They can be passed to other Entities to copy their
- * component descriptors (mixin) or to be used by Systems.
- * When used by Systems, they only pass their reference
- * to serve as a dictionary or description of an entity.
- * 
- * The actual entity and data are instantiated inside the
- * parent System and can be used by it or its children
- * Systems (the entity's private instance System siblings).
- *
- * System isolation of data is necessary to keep state
- * untouchable by foreign Systems or individual actions,
- * and to make discovery of entities and (de)serialization
- * of state efficient and reliable.
- *
  * @param {String} [id]
  * @param {Array} [components]
  * @api public
