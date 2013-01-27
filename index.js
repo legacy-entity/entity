@@ -101,8 +101,9 @@ Entity.prototype.has = function (c) {
 /**
  * Apply component data to entity.
  *
- * @param {Component} c 
- * @return {Entity} this
+ * @param {component} c
+ * @return {entity} this
+ * @api private
  */
 
 Entity.prototype.applyComponent = function (c) {
@@ -110,7 +111,7 @@ Entity.prototype.applyComponent = function (c) {
   for (var p in c) {
     if ('components' == p) continue
     var val = c[p]
-    if (Array.isArray(val)) {
+    if ('object' == typeof val) {
       e.defaults[p] = val
       e[p] = e.getDefault(p)
     }
@@ -121,11 +122,33 @@ Entity.prototype.applyComponent = function (c) {
   return this
 }
 
+/**
+ * Get a default value.
+ *
+ * @param {key} p 
+ * @return {mixed} value
+ * @api private
+ */
+
 Entity.prototype.getDefault = function (p) {
   var c = this.defaults[p]
-  var fn = c[0]
-  var args = c.slice(1)
-  return fn.apply(c, args)
+  if (Array.isArray(c)) {
+    var fn = c[0]
+    var args = c.slice(1)
+    return fn.apply(c, args)
+  }
+  else if ('object' == typeof c) {
+    var n = each(c, function (item, k) {
+      if (Array.isArray(item)) {
+        var fn = item[0]
+        var args = item.slice(1)
+        return fn.apply(item, args)
+      }
+      else return item
+    })
+    return n
+  }
+  else return item
 }
 
 /**
@@ -142,4 +165,22 @@ function merge (t, s) {
     t[k] = s[k]
   }
   return t
+}
+
+/**
+ * Iterate an object.
+ *
+ * @param {object} o 
+ * @param {fn} fn 
+ * @param {object} ctx 
+ * @api private
+ */
+
+function each (o, fn, ctx) {
+  ctx = ctx || this
+  var n = {}
+  for (var k in o) {
+    n[k] = fn.call(ctx, o[k], k)
+  }
+  return n
 }
