@@ -64,18 +64,18 @@ describe("Entity()", function () {
     })
   })
 
-  describe(".use(component)", function () {
+  describe(".add(component)", function () {
     it("should add component", function () {
       var e = new Entity()
       var c = { foo: [String, 'bar'] }
-      e.use(c)
-      assert(c===e.components[0])
+      e.add(c)
+      assert(e.components.has(c))
     })
 
     it("should create accessors when .applyComponents() is called", function () {
       var e = new Entity()
       var c = { foo: [String, 'bar'] }
-      e.use(c)
+      e.add(c)
       e.applyComponents()
       assert('function'==typeof e.foo)
     })
@@ -83,7 +83,7 @@ describe("Entity()", function () {
     it("should have default value", function () {
       var e = new Entity()
       var c = { foo: [String, 'bar'] }
-      e.use(c)
+      e.add(c)
       e.applyComponents()
       assert('bar'===e.foo())
     })
@@ -91,7 +91,7 @@ describe("Entity()", function () {
     it("should handle nested values", function () {
       var e = new Entity()
       var c = { foo: { bar: [String, 'bar'] } }
-      e.use(c)
+      e.add(c)
       e.applyComponents()
       assert('bar'===e.foo.bar())
     })
@@ -105,7 +105,7 @@ describe("Entity()", function () {
           }
         }
       }
-      e.use(c)
+      e.add(c)
       e.applyComponents()
       assert(101===e.foo.bar.lol())
     })
@@ -123,20 +123,11 @@ describe("Entity()", function () {
         }
       , lol: [Number, 202]
       }
-      e.use(c)
+      e.add(c)
       e.applyComponents()
       assert(101===e.foo.bar.lol())
       assert('foobar'===e.bar.foo())
       assert(202===e.lol())
-    })
-  })
-
-  describe(".add(component)", function () {
-    it("should add component", function () {
-      var e = new Entity()
-      var c = { foo: [String, 'bar'] }
-      e.add(c)
-      assert(c===e.components[0])
     })
 
     it("should emit `add` event", function (done) {

@@ -9,6 +9,7 @@
  * Module dependencies.
  */
 
+var Set = require('set')
 var Emitter = require('emitter')
 var Accessors = require('accessors')
 var attr = Accessors.attr
@@ -27,7 +28,7 @@ module.exports = Entity
 
 function Entity () {
   Accessors.call(this)
-  this.components = []
+  this.components = new Set()
 }
 
 /**
@@ -43,56 +44,54 @@ Emitter(Entity.prototype)
 Accessors(Entity.prototype)
 
 /**
- * Uses component `c`.
+ * Actually adds a component to
+ * our components.
  *
  * @param {Object} c
  * @return {Entity} this
  * @api public
  */
 
-Entity.prototype.use = function (c) {
+Entity.prototype.add = function (c) {
   var self = this
-  if (c instanceof Entity) {
-    c.components.forEach(function (_c) {
+  if (this.has(c)) {
+    console.dir(c)
+    console.error('already have component', c)
+    return this
+  }
+  if (c.components) {
+    c.components.each(function (_c) {
       self.add(_c)
     })
   }
-  this.add(c)
+  this.components.add(c)
+  this.emit('add', c)
   return this
 }
 
 /**
- * Apply all our components.
- *
- * @return {Entity} this
- * @api private
- */
-
-Entity.prototype.applyComponents = function () {
-  var self = this
-  this.components.forEach(function (c) {
-    applyComponent(self, c)
-  })
-  return this
-}
-
-/**
- * Actually adds a component to
- * our components.
+ * Removes component `c` and
+ * all of its components.
  *
  * @param {Object} c
  * @return {Entity} this
- * @api private
+ * @api public
  */
 
-Entity.prototype.add = function (c) {
-  if (this.has(c)) {
+Entity.prototype.remove = function (c) {
+  var self = this
+  if (!this.has(c)) {
     console.dir(c)
-    console.error(this.id+' already has component', c)
+    console.error('does not have component', c)
     return this
   }
-  this.components.push(c)
-  this.emit('add', c)
+  if (c.components) {
+    c.components.each(function (_c) {
+      self.remove(_c)
+    })
+  }
+  this.components.remove(c)
+  this.emit('remove', c)
   return this
 }
 
@@ -105,7 +104,22 @@ Entity.prototype.add = function (c) {
  */
 
 Entity.prototype.has = function (c) {
-  return !!~this.components.indexOf(c)
+  return this.components.has(c)
+}
+
+/**
+ * Apply all our components.
+ *
+ * @return {Entity} this
+ * @api private
+ */
+
+Entity.prototype.applyComponents = function () {
+  var self = this
+  this.components.each(function (c) {
+    applyComponent(self, c)
+  })
+  return this
 }
 
 /**
