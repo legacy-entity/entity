@@ -8,16 +8,23 @@
 ## API
 
   - [Entity()](#entity)
-  - [Entity.use()](#entityusecobject)
+  - [Entity.add()](#entityaddcobject)
+  - [Entity.remove()](#entityremovecobject)
   - [Entity.has()](#entityhascobject)
 
 ### Entity()
 
   Entity class.
 
-### Entity.use(c:Object)
+### Entity.add(c:Object)
 
-  Uses component `c`.
+  Adds a component to
+  our components.
+
+### Entity.remove(c:Object)
+
+  Removes component `c` and
+  all of its components.
 
 ### Entity.has(c:Object)
 
