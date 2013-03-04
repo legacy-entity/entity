@@ -1,13 +1,17 @@
 {
   "name": "entity",
   "description": "entity class",
-  "version": "0.0.4",
+  "version": "0.1.0",
   "keywords": ["game","entity"],
   "author": "stagas",
   "license": "MIT",
   "dependencies": {
-    "component/emitter": "*",
-    "entity/uid": "*"
+    "stagas/accessors": "*",
+    "component/emitter": "*"
+  },
+  "development": {
+    "stagas/watch-js": "*",
+    "component/assert": "*"
   },
   "scripts": ["index.js"]
 }
