@@ -141,6 +141,28 @@ describe("Entity()", function () {
     })
   })
 
+  describe(".remove(component)", function () {
+    it("should remove component", function () {
+      var e = new Entity()
+      var c = { foo: [String, 'bar'] }
+      e.add(c)
+      assert(e.components.has(c))
+      e.remove(c)
+      assert(!e.components.has(c))
+    })
+
+    it("should emit `remove` event", function (done) {
+      var e = new Entity()
+      var c = { foo: [String, 'bar'] }
+      e.once('remove', function (_c) {
+        assert(_c===c)
+        done()
+      })
+      e.add(c)
+      e.remove(c)
+    })
+  })
+
   describe(".has(component)", function () {
     it("should detect component", function () {
       var e = new Entity()

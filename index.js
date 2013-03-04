@@ -44,7 +44,7 @@ Emitter(Entity.prototype)
 Accessors(Entity.prototype)
 
 /**
- * Actually adds a component to
+ * Adds a component to
  * our components.
  *
  * @param {Object} c
